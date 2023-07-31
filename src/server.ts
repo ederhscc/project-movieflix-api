@@ -10,8 +10,13 @@ app.use(express.json());
 
 app.get("/movies", async (_, res) => {
     const movies = await prisma.movie.findMany({
-        orderBy: { title: "asc" },
-        include: { genres: true, languages: true },
+        orderBy: {
+            title: "asc" 
+        },
+        include: { 
+            genres: true, 
+            languages: true 
+        },
     });
     res.json(movies);
 });
@@ -96,12 +101,39 @@ app.delete("/movies/:id", async (req, res) => {
         await prisma.movie.delete({
             where: {id: id}
         });
-        
+
     }catch(error){
         return res.status(500).send({message: "Falha ao excluir o registro!"});
     }
 
     res.status(200).send("Registro deletado com sucesso!");
+});
+
+app.get("/movies/:genderName", async (req, res) => {
+
+    const {genderName} = req.params;
+
+    try{
+        const moviesFilteredByGenderName = await prisma.movie.findMany({
+            include: {
+                genres: true,
+                languages: true,
+            },
+            where: {
+                genres: {
+                    name: {
+                        equals: genderName,
+                        mode: "insensitive",
+                    },
+                },
+            },
+        });
+        res.status(200).send(moviesFilteredByGenderName);
+    }catch (error) {
+        return res.status(500).send({message: "Falha ao carregar os filmes polo gênero!"});  
+    }
+    
+    
 });
 
 app.listen(port, () => {
