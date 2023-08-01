@@ -83,9 +83,9 @@ app.put("/movies/:id", async (req, res) => {
     } catch (error) {
         return res
             .status(500)
-            .send({ message: "Falha ao atualizar o registro do filme" });
+            .send({ message: "Falha ao atualizar o filme!" });
     }
-    res.status(200).send({ message: "Registro do filme atualizado com sucesso" });
+    res.status(200).send({ message: "Filme atualizado com sucesso!" });
 });
 
 app.delete("/movies/:id", async (req, res) => {
@@ -108,10 +108,10 @@ app.delete("/movies/:id", async (req, res) => {
         });
 
     }catch(error){
-        return res.status(500).send({message: "Falha ao excluir o registro!"});
+        return res.status(500).send({message: "Falha ao excluir o filme!"});
     }
 
-    res.status(200).send("Registro deletado com sucesso!");
+    res.status(200).send("Filme excluído com sucesso!");
 });
 
 app.get("/movies/:genderName", async (req, res) => {
